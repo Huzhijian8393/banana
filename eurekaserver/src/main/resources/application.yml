@@ -1,0 +1,79 @@
+server:
+  ## 程序端口，默认为8080
+  port: 443
+  servlet:
+    session:
+      timeout: 30M
+  ## Tomcat配置
+  tomcat:
+    ## Tomcat URIEncoding
+    uri-encoding: UTF-8
+    ## Tomcat 是否开启压缩，默认为off
+    compresion: on
+    ## 最大连接数
+    max-connections: 3000
+    max-http-header-size: 2000
+    max-http-post-size: 3000
+    ## 最大线程数
+    max-threads: 1000
+    ## 最小空闲线程数
+    min-spare-threads: 20
+    ## accesslog日志配置
+    accesslog:
+      ## 允许access
+      enabled: true
+      ## 日志目录
+      directory: E:/log/tomcat/
+      ## 日志格式
+      pattern: common
+      ## 日志名称前缀
+      prefix: access_log
+      ## 日志后缀
+      suffix: .log
+      ## 日志名称日期格式
+      file-date-format: .yyyy-MM-dd
+      request-attributes-enabled: true
+      rename-on-rotate: true
+
+  ##SSL加密证书配置
+  ssl:
+    ##key-store: key.keystore
+    key-store: server.p12
+    key-store-password: Hz863520
+    enabled: true
+
+## Sping 相关配置
+spring:
+  application:
+    ## 应用名称
+    name: eurekaserver
+## 日志配置
+
+## Eureka配置
+eureka:
+  instance:
+    ## 使用主机名广播服务
+    #hostname: 127.0.0.1
+    ## 使用IP地址广播服务
+    prefer-ip-address: true
+    #secure-port-enabled: true
+    ## 服务租约时间（单位：秒，默认30）。开发环境中可以降低此参数以加快服务注册过程，但生产环境中建议保持默认值
+    lease-renewal-interval-in-seconds: 30
+  client:
+    ## 通过eureka.client.registerWithEureka：false和fetchRegistry：false来表明自己是一个eureka server
+    ## 是否注册到eureka服务器.由于应用本身就是注册中心，故设置为false.
+    registerWithEureka: false
+    ## 是否从eureka服务器检索服务.由于应用本身的职责就是维护服务实例，故设置为false.
+    fetchRegistry: false
+    ## 用于服务注册和服务检索的地址。其中service-url后面需要的是一个Map<String,String>，所以default可以自己定义.
+    service-url:
+      ## 可以通过设置http://username:password@localhost:${server.port}/eureka/为注册与获取服务增加http基础身份验证.
+      defaultZone: https://127.0.0.1:${server.port}/eureka/
+  server:
+    ## 是否关闭自我保护模式。防止失效的服务被一直访问 (Spring Cloud默认该配置是 true)
+    ## 当网络产生波动无法请求成功但服务天工坊尚未崩溃时，自我保护模式并不会删除已在eureka
+    ## 注册表中注册的服务。在对应用频繁的开发环境中建议关闭，生产环境中开启。
+    enable-self-preservation: true
+    ## 服务清理间隔
+    ## 检查失效服务的时间，每隔10s检查失效服务，并移除列表 (Spring Cloud默认该配置是 60s)
+    eviction-interval-timer-in-ms: 10000
